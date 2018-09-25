@@ -40,7 +40,7 @@ cli.choose do |menu|
 		menu.default = :dog
 	end
 
-	owner = @user.new( 
+	@user = User.new( 
 		:age => age,
         	:firstName => firstName,
 		:lastName => lastName,
@@ -65,8 +65,8 @@ user = User.first
 
 while true
 
-       	userid == user.firstName && password == user.password 
-		cli.say(" Hello #{name}! It's good to connect with you again. How can
+	@user.firstName == user.firstName && @user.password == user.password 
+	cli.say(" Hello #{@user.firstName}! It's good to connect with you again. How can
 			I serve you today?")
 		cli.choose do |menu|
 			menu.prompt "Please choose from the below list: \n
@@ -83,7 +83,7 @@ while true
 			menu.choice(1){"Excellent idea. I'll run the commands at once!"}
 			exec("sudo apt-get update && sudo apt-get upgrade")
 		end
-	if userid != user.firstName || password != user.password { cli.say ("That is an incorrect combination. Please try again.") } 
+		if @user.firstName != user.firstName || @user.password != user.password { cli.say ("That is an incorrect combination. Please try again.") } 
 break
 exit
 	end
