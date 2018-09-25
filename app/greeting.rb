@@ -1,5 +1,5 @@
 #!/usr/local/bin/ruby
-
+require File.expand_path('~/wulo/wulo_ai/config/environment.rb', __FILE__)
 require 'highline/import'
 cli = HighLine.new 
 cli.choose do |menu|
@@ -40,7 +40,7 @@ cli.choose do |menu|
 		menu.default = :dog
 	end
 
-	@user = User.new( 
+	owner = @user.new( 
 		:age => age,
         	:firstName => firstName,
 		:lastName => lastName,
