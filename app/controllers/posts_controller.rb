@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
   def index
+    @post = Post.find(params[:id])	  
   end
 
   def show
+    @post = Post.all
   end
 
 
@@ -19,5 +21,17 @@ class PostsController < ApplicationController
 	    flash[:error] = "There was an error saving this journal entry."
 	    render :new
   def edit
+    @post = Post.find(params[:id])	  
   end
+
+  def destroy
+	  @post = Post.find(params[:id])
+
+	  if @post.destroy
+		  flash[:notice] = "\"#{@post.title}\" was deleted successfully."
+		  redirect_to posts_path
+	  else
+		  flash.now[:alert} = "There was an error deleting the post."
+	      render :show
+	  end
 end

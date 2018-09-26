@@ -8,8 +8,59 @@ cli.choose do |menu|
 	2. I am the Owner and this is my first time using this cyberdeck.\n
 	3. I am not the Owner and should probably fuck off.\n"
 	menu.choice(1){
-		userid = ask("Enter your name:  ") { |q| q.echo = true }
+		userid = ask("Enter your first name:  ") { |q| q.echo = true }
 		password = ask("Enter your password:  ") { |q| q.echo = "*" }
+		@user = User.last
+
+
+
+	if userid == @user.firstName && password == @user.password 
+	cli.say(" Hello #{@user.firstName}! It's good to connect with you again. How can
+			I serve you today?")
+
+		cli.choose do |menu|
+			menu.prompt = "Please choose from the below list: \n
+			1. Run updates on system.\n
+			2. Search for information. \n
+			3. Make entry in your Journal. \n
+			4. Request oracular advice. \n
+			5. Check if web resource is available. \n
+			6. Display this month's journal entries. \n
+			7. Export this year's journal entries for reading. \n
+			8. Export All journal entires for reading. \n
+			
+			"
+			menu.choice(1){"Excellent idea. I'll run the commands at once!"
+			exec("sudo apt-get update && sudo apt-get upgrade")
+			}
+			menu.choice(2){
+				search = cli.ask "Please enter what you'd like to search for."
+				exec(" googler #{search} ")
+			}
+			menu.choice(3){
+				title = cli.ask "What should I title 
+				this journal entry #{@user.firstName}?"
+				body = cli.ask "What are your thoughts, #{@user.firstName}?"
+			
+				@post = Post.new
+				@post.title = title
+				@post.body = body
+				@post.save
+
+				cli.say "I've saved that entry #{@user.firstName}, thank you!"
+			}
+			menu.choice(4){
+				cli.say "Here is your card from the Tarot, #{@user.firstName}!"
+				card = rand(72)
+				puts card
+			}	
+		end
+		exit
+	elsif userid != @user.firstName || password != @user.password { cli.say ("That is an incorrect combination. Please try again.") } 
+break
+exit
+	end
+
 	}
 	menu.choice(2){ 
 		name = cli.ask "My name is Wulo, and I am your Cyberdeck's machine-spirit. 
@@ -26,11 +77,11 @@ cli.choose do |menu|
 	ethnicity = cli.ask "What is your ethnicity/culture?"
 	region = cli.ask "What country are you from?"
 	favoriteNews = cli.ask "What is your favorite news provider?"
-	favoriteTeam = cli.ask "What is your favorite sports team?"
+	favoriteTeam = cli.ask "Who is your favorite athlete or team?"
 	profession = cli.ask "What is your profession?"
 	group = cli.ask "What important (to you) group are you a member of?"
 	activity = cli.ask "What is your favorite activity to do?"
-	passion = cli.ask "What are you pasionate about?"
+	passion = cli.ask "What are you passionate about?"
 	password = cli.ask "What would you like your password to be?"
 
 	cli.choose do |menu|
@@ -61,7 +112,7 @@ cli.choose do |menu|
 		menu.choice(3){ exit } 
 end
 
-user = User.first
+user = User.last
 
 while true
 
@@ -69,7 +120,7 @@ while true
 	cli.say(" Hello #{@user.firstName}! It's good to connect with you again. How can
 			I serve you today?")
 		cli.choose do |menu|
-			menu.prompt "Please choose from the below list: \n
+			menu.prompt = "Please choose from the below list: \n
 			1. Run updates on system.\n
 			2. Search for information. \n
 			3. Make entry in your Journal. \n
