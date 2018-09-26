@@ -1,6 +1,7 @@
 #!/usr/local/bin/ruby
 require File.expand_path('~/wulo/wulo_ai/config/environment.rb', __FILE__)
 require 'highline/import'
+system "clear"
 cli = HighLine.new 
 cli.choose do |menu|
 	menu.prompt = "Please choose from the following options:\n
@@ -13,7 +14,7 @@ cli.choose do |menu|
 		@user = User.last
 
 
-
+system "clear"
 	if userid == @user.firstName && password == @user.password 
 	cli.say(" Hello #{@user.firstName}! It's good to connect with you again. How can
 			I serve you today?")
@@ -35,10 +36,10 @@ cli.choose do |menu|
 			}
 			menu.choice(2){
 				search = cli.ask "Please enter what you'd like to search for."
-				exec(" googler #{search} ")
+				exec(" googler '#{search}' ")
 			}
 			menu.choice(3){
-				title = cli.ask "What should I title 
+				title = cli.ask "What should I title\n 
 				this journal entry #{@user.firstName}?"
 				body = cli.ask "What are your thoughts, #{@user.firstName}?"
 			
@@ -53,7 +54,24 @@ cli.choose do |menu|
 				cli.say "Here is your card from the Tarot, #{@user.firstName}!"
 				card = rand(72)
 				puts card
-			}	
+			}
+			menu.choice(5){
+				resource = cli.ask "Please enter the URL of the resource \n
+			       you wish to verify is available (ex. 'http://www.google.com'."
+				exec(" is-reachable #{resource} ")
+			}
+			menu.choice(6){
+ 				cli.say "Here are the last month of journal entries"
+				@posts = Post.all
+				@posts.each do |post|
+					puts post.title
+					puts post.body
+					puts "\n"
+					puts "\n"
+				end
+				
+			}
+
 		end
 		exit
 	elsif userid != @user.firstName || password != @user.password { cli.say ("That is an incorrect combination. Please try again.") } 
