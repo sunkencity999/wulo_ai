@@ -1,6 +1,9 @@
 #!/usr/local/bin/ruby
 require File.expand_path('~/wulo/wulo_ai/config/environment.rb', __FILE__)
 require 'highline/import'
+require 'csv'
+
+
 system "clear"
 cli = HighLine.new 
 cli.choose do |menu|
@@ -27,16 +30,15 @@ system "clear"
 			4. Request oracular advice. \n
 			5. Check if web resource is available. \n
 			6. Display this month's journal entries. \n
-			7. Export this year's journal entries for reading. \n
-			8. Export All journal entires for reading. \n
-			
+			7. Export all journal entries to CSV. \n
+			8. Open Mail application (Mutt). 
 			"
 			menu.choice(1){"Excellent idea. I'll run the commands at once!"
 			exec("sudo apt-get update && sudo apt-get upgrade")
 			}
 			menu.choice(2){
 				search = cli.ask "Please enter what you'd like to search for."
-				exec(" googler '#{search}' ")
+				exec("googler \'#{search}\' ")
 			}
 			menu.choice(3){
 				title = cli.ask "What should I title\n 
@@ -61,7 +63,7 @@ system "clear"
 				exec(" is-reachable #{resource} ")
 			}
 			menu.choice(6){
- 				cli.say "Here are the last month of journal entries"
+				cli.say "Here are the last month of journal entries."
 				@posts = Post.all
 				@posts.each do |post|
 					puts post.title
@@ -69,6 +71,22 @@ system "clear"
 					puts "\n"
 					puts "\n"
 				end
+				
+			}
+			menu.choice(7){
+				cli.say "Exporting Journal Entries to CSV."
+				@posts = Post.all	
+
+				CSV.open("christopherJournal.csv", "w") do |csv|
+					csv << ["Title", "Body", "Created At", "Updated At"]
+					@posts.each {|row| csv << [row.title, row.body, row.created_at, row.updated_at]}
+				end
+			
+			
+			}
+			menu.choice(8){
+				cli.say "Opening mail application!"
+				exec("mutt")
 				
 			}
 
@@ -126,36 +144,15 @@ exit
 	    
 	    	)
 	@user.save
-	}
-		menu.choice(3){ exit } 
+
+	cli.say "Thank you for telling me about yourself #{@user.firstName}!. Now you can access me Directly!"
+		exit
+	}	
+	menu.choice(3){ exit } 
+
+
+
 end
 
-user = User.last
-
-while true
-
-	@user.firstName == user.firstName && @user.password == user.password 
-	cli.say(" Hello #{@user.firstName}! It's good to connect with you again. How can
-			I serve you today?")
-		cli.choose do |menu|
-			menu.prompt = "Please choose from the below list: \n
-			1. Run updates on system.\n
-			2. Search for information. \n
-			3. Make entry in your Journal. \n
-			4. Request oracular advice. \n
-			5. Check if web resource is available. \n
-			6. Display this month's journal entries. \n
-			7. Export this year's journal entries for reading. \n
-			8. Export All journal entires for reading. \n
-			
-			"
-			menu.choice(1){"Excellent idea. I'll run the commands at once!"}
-			exec("sudo apt-get update && sudo apt-get upgrade")
-		end
-		if @user.firstName != user.firstName || @user.password != user.password { cli.say ("That is an incorrect combination. Please try again.") } 
-break
-exit
-	end
-end
 
 
