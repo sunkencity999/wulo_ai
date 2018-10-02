@@ -1,10 +1,12 @@
-#!/usr/local/bin/ruby
+#!/home/pi/.rvm/rubies/ruby-2.5.1/bin/ruby
 require File.expand_path('~/wulo/wulo_ai/config/environment.rb', __FILE__)
 require 'highline/import'
 require 'csv'
 
 
 system "clear"
+HighLine::Menu.index_color = :rgb_77bbff
+
 cli = HighLine.new 
 cli.choose do |menu|
 	menu.prompt = "Please choose from the following options:\n
@@ -21,8 +23,9 @@ system "clear"
 	if userid == @user.firstName && password == @user.password 
 	cli.say(" Hello #{@user.firstName}! It's good to connect with you again. How can
 			I serve you today?")
-
+		
 		cli.choose do |menu|
+			menu.index_color = :blue
 			menu.prompt = "Please choose from the below list: \n
 			1. Run updates on system.\n
 			2. Search for information. \n
@@ -31,18 +34,18 @@ system "clear"
 			5. Check if web resource is available. \n
 			6. Display this month's journal entries. \n
 			7. Export all journal entries to CSV. \n
-			8. Open Mail application (Mutt). 
+			8. Open Mail application (Mutt). \n
+		        9. Display current list of tasks.	
 			"
-			menu.choice(1){"Excellent idea. I'll run the commands at once!"
+			menu.choice(1) {"Excellent idea. I'll run the commands at once!"
 			exec("sudo apt-get update && sudo apt-get upgrade")
 			}
-			menu.choice(2){
+			menu.choice(2) {
 				search = cli.ask "Please enter what you'd like to search for."
 				exec("googler \'#{search}\' ")
 			}
-			menu.choice(3){
-				title = cli.ask "What should I title\n 
-				this journal entry #{@user.firstName}?"
+			menu.choice(3) {
+				title = cli.ask "What should I title this journal entry #{@user.firstName}?"
 				body = cli.ask "What are your thoughts, #{@user.firstName}?"
 			
 				@post = Post.new
@@ -52,17 +55,17 @@ system "clear"
 
 				cli.say "I've saved that entry #{@user.firstName}, thank you!"
 			}
-			menu.choice(4){
+			menu.choice(4) {
 				cli.say "Here is your card from the Tarot, #{@user.firstName}!"
 				card = rand(72)
 				puts card
 			}
-			menu.choice(5){
+			menu.choice(5) {
 				resource = cli.ask "Please enter the URL of the resource \n
 			       you wish to verify is available (ex. 'http://www.google.com'."
 				exec(" is-reachable #{resource} ")
 			}
-			menu.choice(6){
+			menu.choice(6) {
 				cli.say "Here are the last month of journal entries."
 				@posts = Post.all
 				@posts.each do |post|
@@ -73,7 +76,7 @@ system "clear"
 				end
 				
 			}
-			menu.choice(7){
+			menu.choice(7) {
 				cli.say "Exporting Journal Entries to CSV."
 				@posts = Post.all	
 
@@ -84,16 +87,20 @@ system "clear"
 			
 			
 			}
-			menu.choice(8){
+			menu.choice(8) {
 				cli.say "Opening mail application!"
 				exec("mutt")
 				
+			}
+			menu.choice(9) {
+				cli.say "Showing current list of tasks."
+				exec("task list")
 			}
 
 		end
 		exit
 	elsif userid != @user.firstName || password != @user.password { cli.say ("That is an incorrect combination. Please try again.") } 
-break
+
 exit
 	end
 
