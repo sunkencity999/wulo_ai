@@ -2,17 +2,17 @@
 require File.expand_path('~/wulo/wulo_ai/config/environment.rb', __FILE__)
 require 'highline/import'
 require 'csv'
-
+require 'rainbow'
 
 system "clear"
 HighLine::Menu.index_color = :rgb_77bbff
 
 cli = HighLine.new 
 cli.choose do |menu|
-	menu.prompt = "Please choose from the following options:\n
+	menu.prompt = Rainbow("Please choose from the following options:\n
 	1. I am the Owner and would like to login.\n
 	2. I am the Owner and this is my first time using this cyberdeck.\n
-	3. I am not the Owner and should probably fuck off.\n"
+	3. I am not the Owner and should probably fuck off.\n").red
 	menu.choice(1){
 		userid = ask("Enter your first name:  ") { |q| q.echo = true }
 		password = ask("Enter your password:  ") { |q| q.echo = "*" }
@@ -26,19 +26,22 @@ system "clear"
 		
 		cli.choose do |menu|
 			menu.index_color = :blue
-			menu.prompt = "Please choose from the below list: \n
+			menu.prompt = Rainbow("Please choose from the below list: \n
 			1. Run updates on system.\n
 			2. Search for information. \n
 			3. Make entry in your Journal. \n
-			4. Request oracular advice. \n
+			4. Request oracular advice (think of your question, then hit Enter). \n
 			5. Check if web resource is available. \n
 			6. Display this month's journal entries. \n
 			7. Export all journal entries to CSV. \n
 			8. Open Mail application (Mutt). \n
-		        9. Display current list of tasks.	
-			"
-			menu.choice(1) {"Excellent idea. I'll run the commands at once!"
-			exec("sudo apt-get update && sudo apt-get upgrade")
+		        9. Display current list of tasks. \n
+			10. View a web page using it's URL. \n
+			11. Exit Wulo and return to the command line.	
+			 ").red
+			menu.choice(1) {"Excellent idea #{@user.firstName}. I'll run the commands at once!"
+			exec("echo sudo apt-get update && sudo apt-get upgrade")
+			
 			}
 			menu.choice(2) {
 				search = cli.ask "Please enter what you'd like to search for."
@@ -56,9 +59,92 @@ system "clear"
 				cli.say "I've saved that entry #{@user.firstName}, thank you!"
 			}
 			menu.choice(4) {
-				cli.say "Here is your card from the Tarot, #{@user.firstName}!"
-				card = rand(72)
-				puts card
+				
+				cli.say "Here are your cards from the Tarot, #{@user.firstName}!"
+				cli.say "This card is the past."
+				card = rand(22) 
+				if card == 1 then puts "The Magician"
+				elsif card == 2 then puts "The High Priestess"
+				elsif card == 3 then puts "The Empress"
+				elsif card == 4 then puts "The Emperor"
+				elsif card == 5 then puts "The Hierophant"
+				elsif card == 6 then puts "The Lovers"
+				elsif card == 7 then puts "The Chariot"
+				elsif card == 8 then puts "Strength"
+				elsif card == 9 then puts "The Hermit"
+				elsif card == 10 then puts "Wheel of Fortune"
+				elsif card == 11 then puts "Justice"
+				elsif card == 12 then puts "The Hanged Man"
+				elsif card == 13 then puts "Death"
+				elsif card == 14 then puts "Temperance"
+				elsif card == 15 then puts "The Devil"
+				elsif card == 16 then puts "The Tower"
+				elsif card == 17 then puts "The Star"
+				elsif card == 18 then puts "The Moon"
+				elsif card == 19 then puts "The Sun"
+				elsif card == 20 then puts "Judgement"
+				elsif card == 21 then puts "The World"
+				elsif card == 22 then puts "The Fool"
+				end
+				cli.say "This card is the Present."
+				
+				card2 = rand(22)
+				if card2 == 1 then puts "The Magician"
+				elsif card2 == 2 then puts "The High Priestess"
+				elsif card2 == 3 then puts "The Empress"
+				elsif card2 == 4 then puts "The Emperor"
+				elsif card2 == 5 then puts "The Hierophant"
+				elsif card2 == 6 then puts "The Lovers"
+				elsif card2 == 7 then puts "The Chariot"
+				elsif card2 == 8 then puts "Strength"
+				elsif card2 == 9 then puts "The Hermit"
+				elsif card2 == 10 then puts "Wheel of Fortune"
+				elsif card2 == 11 then puts "Justice"
+				elsif card2 == 12 then puts "The Hanged Man"
+				elsif card2 == 13 then puts "Death"
+				elsif card2 == 14 then puts "Temperance"
+				elsif card2 == 15 then puts "The Devil"
+				elsif card2 == 16 then puts "The Tower"
+				elsif card2 == 17 then puts "The Star"
+				elsif card2 == 18 then puts "The Moon"
+				elsif card2 == 19 then puts "The Sun"
+				elsif card2 == 20 then puts "Judgement"
+				elsif card2 == 21 then puts "The World"
+				elsif card2 == 22 then puts "The Fool"
+				end
+
+				cli.say "This card is the Future"
+				
+				card3 = rand(22)
+				
+				if card3 == 1 then puts "The Magician"
+				elsif card3 == 2 then puts "The High Priestess"
+				elsif card3 == 3 then puts "The Empress"
+				elsif card3 == 4 then puts "The Emperor"
+				elsif card3 == 5 then puts "The Hierophant"
+				elsif card3 == 6 then puts "The Lovers"
+				elsif card3 == 7 then puts "The Chariot"
+				elsif card3 == 8 then puts "Strength"
+				elsif card3 == 9 then puts "The Hermit"
+				elsif card3 == 10 then puts "Wheel of Fortune"
+				elsif card3 == 11 then puts "Justice"
+				elsif card3 == 12 then puts "The Hanged Man"
+				elsif card3 == 13 then puts "Death"
+				elsif card3 == 14 then puts "Temperance"
+				elsif card3 == 15 then puts "The Devil"
+				elsif card3 == 16 then puts "The Tower"
+				elsif card3 == 17 then puts "The Star"
+				elsif card3 == 18 then puts "The Moon"
+				elsif card3 == 19 then puts "The Sun"
+				elsif card3 == 20 then puts "Judgement"
+				elsif card3 == 21 then puts "The World"
+				elsif card3 == 22 then puts "The Fool"
+				end
+					
+				
+
+					
+				
 			}
 			menu.choice(5) {
 				resource = cli.ask "Please enter the URL of the resource \n
@@ -96,7 +182,16 @@ system "clear"
 				cli.say "Showing current list of tasks."
 				exec("task list")
 			}
-
+			menu.choice(10){
+				webAsk = cli.ask "Please enter the full URL."
+				cli.say "Loading up requested web page."
+				exec("lynx #{webAsk}")
+			}
+			menu.choice(11) { 
+				cli.say "Thank you #{@user.firstName}! Be well."
+				exit
+			}
+			
 		end
 		exit
 	elsif userid != @user.firstName || password != @user.password { cli.say ("That is an incorrect combination. Please try again.") } 
